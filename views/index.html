@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Template</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    
+    <div id="posts">  
+    </div>
+
+    <script type="text/dust" id="DUST_post">
+        <div>
+            {data}
+        </div>
+    </script>
+
+</body>
+<script>
+    function newPost(post) {
+        dust.renderSource(document.getElementById("DUST_post").textContent, post, function (err, out) {
+            document.getElementById("posts").innerHTML += out;
+        });
+    }
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.responseType = "json";
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+               console.log(posts);
+            var posts = xhttp.response;
+            posts.forEach(function(e){
+                newPost(e);
+            });
+        }
+    };
+    xhttp.open("GET", "posts", true);
+    xhttp.send();
+</script>
+
+</html>
