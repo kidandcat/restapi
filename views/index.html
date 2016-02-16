@@ -6,17 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Template</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/dust-full.min.js"></script>
+    <link rel="stylesheet" href="css/jairo.min.css">
+    <script src="js/jairo.min.js"></script>
 </head>
 
 <body>
     
-    <div id="posts">  
-    </div>
+    <ul id="posts" class="uk-panel">  
+    </ul>
 
     <script type="text/dust" id="DUST_post">
-        <div>
+        <li class="">
             {data}
-        </div>
+        </li>
     </script>
 
 </body>
@@ -27,19 +30,24 @@
         });
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.responseType = "json";
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-               console.log(posts);
-            var posts = xhttp.response;
-            posts.forEach(function(e){
-                newPost(e);
-            });
-        }
-    };
-    xhttp.open("GET", "posts", true);
-    xhttp.send();
+    setInterval(function(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.responseType = "json";
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var posts = xhttp.response;
+                console.log(posts);
+                document.getElementById("posts").innerHTML = '';
+                posts.rows.forEach(function(e){
+                    console.log(e);
+                    newPost(e);
+                });
+            }
+        };
+        xhttp.open("GET", "/posts", true);
+        xhttp.send();
+    }, 1000)
+    
 </script>
 
 </html>
